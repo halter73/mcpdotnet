@@ -5,6 +5,7 @@ using McpDotNet.Server;
 using McpDotNet.Utils.Json;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 
 namespace McpDotNet.Protocol.Transport;
 
@@ -29,9 +30,9 @@ public sealed class StdioServerTransport : TransportBase, IServerTransport
     /// <param name="serverOptions">The server options.</param>
     /// <param name="loggerFactory">A logger factory for creating loggers.</param>
     /// <param name="inputOutputStreams">Container for the input and output streams</param>
-    public StdioServerTransport(McpServerOptions serverOptions, ILoggerFactory? loggerFactory, InputOutputStreams inputOutputStreams)
+    public StdioServerTransport(IOptions<McpServerOptions> serverOptions, ILoggerFactory? loggerFactory, InputOutputStreams inputOutputStreams)
         : this(
-              serverOptions is not null ? serverOptions.ServerInfo.Name : throw new ArgumentNullException(nameof(serverOptions)),
+              serverOptions is not null ? serverOptions.Value.ServerInfo.Name : throw new ArgumentNullException(nameof(serverOptions)),
               loggerFactory,
               inputOutputStreams is not null ? inputOutputStreams.Output : throw new ArgumentNullException(nameof(inputOutputStreams)),
               inputOutputStreams.Input

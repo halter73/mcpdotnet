@@ -5,16 +5,17 @@ using McpDotNet.Protocol.Types;
 using McpDotNet.Server;
 using McpDotNet.Utils.Json;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 
 namespace McpDotNet.Tests.Transport;
 
 public class StdioServerTransportTests
 {
-    private readonly McpServerOptions _serverOptions;
+    private readonly IOptions<McpServerOptions> _serverOptions;
 
     public StdioServerTransportTests()
     {
-        _serverOptions = new McpServerOptions
+        _serverOptions = Options.Create(new McpServerOptions
         {
             ServerInfo = new Implementation
             {
@@ -24,7 +25,7 @@ public class StdioServerTransportTests
             ProtocolVersion = "2.0",
             InitializationTimeout = TimeSpan.FromSeconds(10),
             ServerInstructions = "Test Instructions"
-        };
+        });
     }
 
     [Fact]

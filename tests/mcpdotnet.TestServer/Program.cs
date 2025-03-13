@@ -3,6 +3,7 @@ using McpDotNet.Protocol.Transport;
 using McpDotNet.Protocol.Types;
 using McpDotNet.Server;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Serilog;
 
 namespace McpDotNet.TestServer;
@@ -29,7 +30,7 @@ internal static class Program
     {
         Log.Logger.Information("Starting server...");
 
-        McpServerOptions options = new()
+        var options = Options.Create(new McpServerOptions()
         {
             ServerInfo = new Implementation() { Name = "TestServer", Version = "1.0.0" },
             Capabilities = new ServerCapabilities()
@@ -40,7 +41,7 @@ internal static class Program
             },
             ProtocolVersion = "2024-11-05",
             ServerInstructions = "This is a test server with only stub functionality",
-        };
+        });
 
         var loggerFactory = CreateLoggerFactory();
         McpServerFactory factory = new(new StdioServerTransport("TestServer", loggerFactory), options, loggerFactory);

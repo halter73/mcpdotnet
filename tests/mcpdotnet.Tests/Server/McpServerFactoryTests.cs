@@ -12,7 +12,7 @@ public class McpServerFactoryTests
     private readonly Mock<IServerTransport> _serverTransport;
     private readonly Mock<ILoggerFactory> _loggerFactory;
     private readonly Mock<IOptions<McpServerDelegates>> _serverDelegates;
-    private readonly McpServerOptions _options;
+    private readonly IOptions<McpServerOptions> _options;
     private readonly IServiceProvider _serviceProvider;
 
     public McpServerFactoryTests()
@@ -20,12 +20,12 @@ public class McpServerFactoryTests
         _serverTransport = new Mock<IServerTransport>();
         _loggerFactory = new Mock<ILoggerFactory>();
         _serverDelegates = new Mock<IOptions<McpServerDelegates>>();
-        _options = new McpServerOptions
+        _options = Options.Create(new McpServerOptions
         {
             ServerInfo = new Implementation { Name = "TestServer", Version = "1.0" },
             ProtocolVersion = "1.0",
             InitializationTimeout = TimeSpan.FromSeconds(30)
-        };
+        });
         _serviceProvider = new Mock<IServiceProvider>().Object;
     }
 
